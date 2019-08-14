@@ -1,5 +1,6 @@
 package com.nikai.demo.plexus;
 
+import com.nikai.demo.plexus.util.SystemUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -19,6 +20,10 @@ import org.codehaus.plexus.PlexusContainer;
 import org.sonatype.aether.impl.internal.SimpleLocalRepositoryManager;
 
 public class Main {
+
+    public static final String REMOTE_REPOSITORY =
+        "http://nikai.net.cn/content/groups/public/";
+//        "http://192.168.0.99:8081/nexus/content/groups/public";
 
     // archetypes prepared by antrun execution (see pom.xml) from src/test/archetypes
     private final static Archetype ARCHETYPE_BASIC = new Archetype("archetypes", "basic", "1.0");
@@ -75,7 +80,7 @@ public class Main {
 //        archetype.setVersion("1.0.0-SNAPSHOT");
 //        archetype.setRepository("http://192.168.0.99:8081/nexus/content/groups/public");
 
-        ArchetypeGenerationRequest request = new Main().createArchetypeGenerationRequest("hello", NIKAI_ARCHETYPE);
+        ArchetypeGenerationRequest request = new Main().createArchetypeGenerationRequest(NIKAI_ARCHETYPE);
 //            new ArchetypeGenerationRequest(archetype);
 //        DefaultProjectBuildingRequest projectBuildingRequest = new DefaultProjectBuildingRequest();
 //        projectBuildingRequest.setBuildStartTime(new Date());
@@ -93,15 +98,15 @@ public class Main {
     }
 
 
-    private ArchetypeGenerationRequest createArchetypeGenerationRequest(String project, Archetype archetype) {
-        String repositories = new File("D:\\tools\\package\\repo").toURI().toString();
+    private ArchetypeGenerationRequest createArchetypeGenerationRequest(Archetype archetype) {
+        String repositories = new File(SystemUtil.catchLocalRepository()).toURI().toString();
 
         localRepository =
             new DefaultArtifactRepository("local", repositories, new DefaultRepositoryLayout());
 
-        remoteRepository = "http://192.168.0.99:8081/nexus/content/groups/public";
+        remoteRepository = REMOTE_REPOSITORY;
 //            repositories + "/central";
-        outputDirectory = getBasedir() + "/target/projects/" + project;
+        outputDirectory = getBasedir() + "/target/projects/";
 
         projectDirectory = new File(outputDirectory, "demo");
 
@@ -125,7 +130,7 @@ public class Main {
 //        buildingRequest.setBuildStartTime(new Date());
         ArrayList<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
         remoteRepositories
-            .add(new MavenArtifactRepository("oeasy-nexus", "http://192.168.0.99:8081/nexus/content/groups/public",
+            .add(new MavenArtifactRepository("oeasy-nexus", REMOTE_REPOSITORY,
                 new DefaultRepositoryLayout(), new ArtifactRepositoryPolicy(), new ArtifactRepositoryPolicy()));
         buildingRequest.setRemoteRepositories(remoteRepositories);
 //        buildingRequest.setLocalRepository(localRepository);
