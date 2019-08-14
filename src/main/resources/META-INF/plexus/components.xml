@@ -1,0 +1,13 @@
+<component-set>
+  <components>
+    <component>
+      <role>com.nikai.demo.plexus.UserService</role>
+      <role-hint>nikai</role-hint>
+      <implementation>com.nikai.demo.plexus.impl.UserServiceImpl</implementation>
+      <description></description>
+<!--      <isolated-realm>false</isolated-realm>-->
+
+    </component>
+
+  </components>
+</component-set>
