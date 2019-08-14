@@ -2,7 +2,6 @@ package com.nikai.demo.plexus;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Properties;
 import org.apache.maven.archetype.ArchetypeGenerationRequest;
 import org.apache.maven.archetype.ArchetypeManager;
@@ -17,11 +16,7 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.repository.internal.MavenRepositorySystemSession;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
-import org.sonatype.aether.impl.internal.DefaultRemoteRepositoryManager;
-import org.sonatype.aether.impl.internal.EnhancedLocalRepositoryManager;
 import org.sonatype.aether.impl.internal.SimpleLocalRepositoryManager;
-import org.sonatype.aether.util.DefaultRepositorySystemSession;
-import org.sonatype.aether.util.listener.AbstractTransferListener;
 
 public class Main {
 
@@ -140,7 +135,6 @@ public class Main {
         buildingRequest.setRepositorySession(repositorySession);
 
         request.setProjectBuildingRequest(buildingRequest);
-
 
         return request;
     }
