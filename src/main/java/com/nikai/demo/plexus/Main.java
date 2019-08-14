@@ -17,7 +17,11 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.repository.internal.MavenRepositorySystemSession;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.sonatype.aether.impl.internal.DefaultRemoteRepositoryManager;
+import org.sonatype.aether.impl.internal.EnhancedLocalRepositoryManager;
 import org.sonatype.aether.impl.internal.SimpleLocalRepositoryManager;
+import org.sonatype.aether.util.DefaultRepositorySystemSession;
+import org.sonatype.aether.util.listener.AbstractTransferListener;
 
 public class Main {
 
@@ -102,7 +106,7 @@ public class Main {
 
         remoteRepository = "http://192.168.0.99:8081/nexus/content/groups/public";
 //            repositories + "/central";
-        outputDirectory = getBasedir() + "/target/test-classes/projects/" + project;
+        outputDirectory = getBasedir() + "/target/projects/" + project;
 
         projectDirectory = new File(outputDirectory, "demo");
 
@@ -123,17 +127,20 @@ public class Main {
         request.setProperties(ADDITIONAL_PROPERTIES);
 
         ProjectBuildingRequest buildingRequest = new DefaultProjectBuildingRequest();
-        buildingRequest.setBuildStartTime(new Date());
+//        buildingRequest.setBuildStartTime(new Date());
         ArrayList<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
         remoteRepositories
-            .add(new MavenArtifactRepository("releases", "http://192.168.0.99:8081/nexus/content/groups/public",
+            .add(new MavenArtifactRepository("oeasy-nexus", "http://192.168.0.99:8081/nexus/content/groups/public",
                 new DefaultRepositoryLayout(), new ArtifactRepositoryPolicy(), new ArtifactRepositoryPolicy()));
         buildingRequest.setRemoteRepositories(remoteRepositories);
+//        buildingRequest.setLocalRepository(localRepository);
 
         MavenRepositorySystemSession repositorySession = new MavenRepositorySystemSession();
         repositorySession.setLocalRepositoryManager(new SimpleLocalRepositoryManager(localRepository.getBasedir()));
         buildingRequest.setRepositorySession(repositorySession);
+
         request.setProjectBuildingRequest(buildingRequest);
+
 
         return request;
     }
